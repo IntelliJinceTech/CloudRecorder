@@ -12,6 +12,10 @@ export default function App() {
 
   const currentNote = notes.find((note) => note.id === currentNoteId) || notes[0]
 
+  //  todo  add createdAt and updatedAt properties to notes
+  //  * when note is created, set createdAt and updatedAt properties to Date.now()
+  //  todo  whenever note is modified, set updatedAt properties to Date.now()
+
   React.useEffect(() => {
     //note this is considered a web socket connection so we need to give react a way to unsubscribe
     const unsubscribe = onSnapshot(notesCollection, (snapshot) => {
@@ -34,6 +38,8 @@ export default function App() {
   async function createNewNote() {
     const newNote = {
       body: "# Type your markdown note's title here",
+      createAt: Date.now(),
+      updatedAt: Date.now(),
     }
     const newNoteRef = await addDoc(notesCollection, newNote)
     setCurrentNoteId(newNoteRef.id)
@@ -41,7 +47,12 @@ export default function App() {
 
   async function updateNote(text) {
     const docRef = doc(db, 'notes', currentNoteId)
-    await setDoc(docRef, { body: text}, { merge: true})
+    await setDoc(docRef, 
+      { 
+        body: text,
+        updatedAt: Date.now(),
+      }
+      , { merge: true})
   }
 
   async function deleteNote(noteId) {
