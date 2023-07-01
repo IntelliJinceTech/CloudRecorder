@@ -12,9 +12,11 @@ export default function App() {
 
   const currentNote = notes.find((note) => note.id === currentNoteId) || notes[0]
 
-  //  todo  add createdAt and updatedAt properties to notes
+  //  *  add createdAt and updatedAt properties to notes
   //  * when note is created, set createdAt and updatedAt properties to Date.now()
-  //  todo  whenever note is modified, set updatedAt properties to Date.now()
+  //  *  whenever note is modified, set updatedAt properties to Date.now()
+  //todo create a new sorted array that sorts notes array from most recently updated to least recently updated
+  //todo use
 
   React.useEffect(() => {
     //note this is considered a web socket connection so we need to give react a way to unsubscribe
