@@ -16,7 +16,7 @@ export default function App() {
   //  * when note is created, set createdAt and updatedAt properties to Date.now()
   //  *  whenever note is modified, set updatedAt properties to Date.now()
   //todo create a new sorted array that sorts notes array from most recently updated to least recently updated
-  //todo use
+  //todo make sure that the sidebar reflects the new sorted array changes for notes
 
   React.useEffect(() => {
     //note this is considered a web socket connection so we need to give react a way to unsubscribe
