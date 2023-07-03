@@ -26,7 +26,8 @@ export default function App() {
         ...doc.data(),
         id: doc.id,
       }))
-      setNotes(notesArr)
+      const sortedNotes = notesArr.sort((a,b) => b.updatedAt - a.updatedAt)
+      setNotes(sortedNotes)
     })
     return unsubscribe
   }, [])
@@ -55,6 +56,7 @@ export default function App() {
         updatedAt: Date.now(),
       }
       , { merge: true})
+
   }
 
   async function deleteNote(noteId) {
