@@ -12,11 +12,13 @@ export default function App() {
 
   const currentNote = notes.find((note) => note.id === currentNoteId) || notes[0]
 
+  const sortedNotes = notes.sort((a,b) => b.updatedAt - a.updatedAt)
+
   //  *  add createdAt and updatedAt properties to notes
   //  * when note is created, set createdAt and updatedAt properties to Date.now()
   //  *  whenever note is modified, set updatedAt properties to Date.now()
-  //todo create a new sorted array that sorts notes array from most recently updated to least recently updated
-  //todo make sure that the sidebar reflects the new sorted array changes for notes
+  //  *  todo create a new sorted array that sorts notes array from most recently updated to least recently updated
+  //  *  todo make sure that the sidebar reflects the new sorted array changes for notes
 
   React.useEffect(() => {
     //note this is considered a web socket connection so we need to give react a way to unsubscribe
@@ -26,8 +28,8 @@ export default function App() {
         ...doc.data(),
         id: doc.id,
       }))
-      const sortedNotes = notesArr.sort((a,b) => b.updatedAt - a.updatedAt)
-      setNotes(sortedNotes)
+      
+      setNotes(notesArr)
     })
     return unsubscribe
   }, [])
@@ -68,7 +70,7 @@ export default function App() {
     <main>
       {notes.length > 0 ? (
         <Split sizes={[30, 70]} direction="horizontal" className="split">
-          <Sidebar notes={notes} currentNote={currentNote} setCurrentNoteId={setCurrentNoteId} newNote={createNewNote} deleteNote={deleteNote} />
+          <Sidebar notes={sortedNotes} currentNote={currentNote} setCurrentNoteId={setCurrentNoteId} newNote={createNewNote} deleteNote={deleteNote} />
           <Editor currentNote={currentNote} updateNote={updateNote} />
         </Split>
       ) : (
