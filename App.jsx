@@ -9,15 +9,11 @@ import { notesCollection, db } from './firebase'
 export default function App() {
   const [notes, setNotes] = React.useState([])
   const [currentNoteId, setCurrentNoteId] = React.useState('')
+  const [tempNoteText, setTempNoteText] = React.useState('')
 
   const currentNote = notes.find((note) => note.id === currentNoteId) || notes[0]
 
   const sortedNotes = notes.sort((a,b) => b.updatedAt - a.updatedAt)
-
-  // todo: Debouncing 
-  // todo: set up state
-  // todo: change editor to use new state for displaying notes and text instead of making requests to firebase with currentNote
-  // todo: create useEffect hook for copying current note text to new note state 
 
   React.useEffect(() => {
     //note this is considered a web socket connection so we need to give react a way to unsubscribe
@@ -37,7 +33,22 @@ export default function App() {
     if (!currentNoteId) {
         setCurrentNoteId(notes[0]?.id)
     }
-}, [notes])
+  }, [notes]);
+
+  React.useEffect(() => {
+    if (currentNote) {
+      setTempNoteText(currentNote.body)
+    }
+  }, [currentNote]);
+
+  React.useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      if(tempNoteText!== currentNote.body){
+        updateNote(tempNoteText)
+      }
+    }, 500)
+    return() => clearTimeout(timeoutId)
+  }, [tempNoteText]);
 
   async function createNewNote() {
     const newNote = {
@@ -57,7 +68,6 @@ export default function App() {
         updatedAt: Date.now(),
       }
       , { merge: true})
-
   }
 
   async function deleteNote(noteId) {
@@ -70,7 +80,7 @@ export default function App() {
       {notes.length > 0 ? (
         <Split sizes={[30, 70]} direction="horizontal" className="split">
           <Sidebar notes={sortedNotes} currentNote={currentNote} setCurrentNoteId={setCurrentNoteId} newNote={createNewNote} deleteNote={deleteNote} />
-          <Editor currentNote={currentNote} updateNote={updateNote} />
+          <Editor tempNoteText={tempNoteText} updateNote={updateNote} setTempNoteText={setTempNoteText}/>
         </Split>
       ) : (
         <div className="no-notes">
