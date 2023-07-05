@@ -14,11 +14,10 @@ export default function App() {
 
   const sortedNotes = notes.sort((a,b) => b.updatedAt - a.updatedAt)
 
-  //  *  add createdAt and updatedAt properties to notes
-  //  * when note is created, set createdAt and updatedAt properties to Date.now()
-  //  *  whenever note is modified, set updatedAt properties to Date.now()
-  //  *  todo create a new sorted array that sorts notes array from most recently updated to least recently updated
-  //  *  todo make sure that the sidebar reflects the new sorted array changes for notes
+  // todo: Debouncing 
+  // todo: set up state
+  // todo: change editor to use new state for displaying notes and text instead of making requests to firebase with currentNote
+  // todo: create useEffect hook for copying current note text to new note state 
 
   React.useEffect(() => {
     //note this is considered a web socket connection so we need to give react a way to unsubscribe
